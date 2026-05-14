@@ -1,5 +1,5 @@
 import express from "express";
-import { logRequest } from "./module.mjs";
+import { logRequest, validateRoute, handleRoute } from "./module.mjs";
 
 const app = express();
 const port = 3000;
@@ -10,20 +10,17 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
-// main path for adding resources
-app.get("/add", (req, res) => {
-  res.send(200);
-});
-
 app.post("/add", (req, res) => {
-  res.send("POSTED.");
   logRequest(req);
+  const route = validateRoute(req);
+
+  // TO-DO: more robust error handling here for responses
+  if (route) {
+    const routeStatus = handleRoute(req);
+    if (routeStatus) {
+      res.send(200);
+    }
+  } else {
+    res.send(400);
+  }
 });
-
-// app.get("/", (req, res) => {
-//   res.send("Hello World!");
-// });
-
-// curl -X POST http://localhost:3000/add \
-//   -H "Content-Type: application/json" \
-//   -d '{"name":"example","value":123}'
