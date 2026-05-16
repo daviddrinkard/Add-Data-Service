@@ -18,9 +18,9 @@ app.post("/add", (req, res) => {
   if (route) {
     const routeStatus = handleRoute(req);
     if (routeStatus) {
-      res.send(200);
+      res.status(200).send;
     }
   } else {
-    res.send(400);
+    res.status(400).send;
   }
 });
