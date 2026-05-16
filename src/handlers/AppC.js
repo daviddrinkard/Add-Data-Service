@@ -1,15 +1,14 @@
-import { retry } from "../utils/retry.js";
-import { insertSession } from "../db/supabase/appC.queries.js";
-import { appCSchema } from "../schemas/appC.schema.js";
+import { locationSchema } from "../schemas/location.schema.js";
+import { insertLocation } from "../db/supabase/locations.js";
 
 export async function handleAppC(data) {
-  const payload = appCSchema.parse(data);
+  console.log("[App C] Received:", data);
 
-  await retry(() => insertSession(payload), {
-    retries: 6,
-    delay: 400,
-    backoff: 1.8,
-  });
+  // Validate incoming payload
+  const payload = locationSchema.parse(data.data);
 
-  console.log("App C write complete");
+  // Insert with retry logic
+  await insertLocation(payload);
+
+  return { status: 200 };
 }

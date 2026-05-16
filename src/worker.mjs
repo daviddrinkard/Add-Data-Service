@@ -1,5 +1,13 @@
 import zmq from "zeromq";
 import { ROUTES } from "./handlers/index.js";
+import "dotenv/config";
+
+console.log("[Worker] Starting worker process...");
+console.log("URL:", process.env.SUPABASE_URL);
+console.log(
+  "KEY:",
+  process.env.SUPABASE_SERVICE_ROLE_KEY ? "Loaded" : "Missing",
+);
 
 const sock = new zmq.Pull();
 

@@ -7,19 +7,3 @@ export const ROUTES = {
   "app-B": handleAppB,
   "app-C": handleAppC,
 };
-
-// handlers/index.js
-export async function handleAppA(data) {
-  console.log("Handling App A:", data);
-  // TODO: write to Postgres, Mongo, etc.
-}
-
-export async function handleAppB(data) {
-  console.log("Handling App B:", data);
-  // TODO: write to Redis, etc.
-}
-
-export async function handleAppC(data) {
-  console.log("Handling App C:", data);
-  // TODO: write to MySQL, etc.
-}
