@@ -1,10 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import "dotenv/config";
 
-console.log("URL:", process.env.SUPABASE_URL);
-console.log(
-  "KEY:",
-  process.env.SUPABASE_SERVICE_ROLE_KEY ? "Loaded" : "Missing",
-);
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
