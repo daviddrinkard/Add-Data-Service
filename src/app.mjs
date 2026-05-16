@@ -1,5 +1,7 @@
 import express from "express";
 import { logRequest, validateRoute, handleRoute } from "./module.mjs";
+import { publishMessage } from "./zmq-producer.mjs";
+import "dotenv/config";
 
 const app = express();
 const port = 3000;
@@ -10,17 +12,13 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
-app.post("/add", (req, res) => {
+app.post("/add", async (req, res) => {
   logRequest(req);
-  const route = validateRoute(req);
-
-  // TO-DO: more robust error handling here for responses
-  if (route) {
-    const routeStatus = handleRoute(req);
-    if (routeStatus) {
-      res.send(200);
-    }
-  } else {
-    res.send(400);
+  if (!validateRoute(req)) {
+    return res.sendStatus(400);
   }
+
+  await publishMessage(req.body);
+
+  return res.sendStatus(200);
 });
