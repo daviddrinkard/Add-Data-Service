@@ -1,5 +1,6 @@
 import express from "express";
 import { logRequest, validateRoute, handleRoute } from "./module.mjs";
+import { publishMessage } from "./zmq-producer";
 
 const app = express();
 const port = 3000;
@@ -12,15 +13,11 @@ app.listen(port, () => {
 
 app.post("/add", (req, res) => {
   logRequest(req);
-  const route = validateRoute(req);
-
-  // TO-DO: more robust error handling here for responses
-  if (route) {
-    const routeStatus = handleRoute(req);
-    if (routeStatus) {
-      res.status(200).send;
-    }
-  } else {
-    res.status(400).send;
+  if (!validateRoute(req)) {
+    return res.sendStatus(400);
   }
+
+  await publishMessage(req.body);
+  
+  return res.sendStatus(200);
 });
