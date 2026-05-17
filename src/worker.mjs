@@ -9,19 +9,25 @@ console.log(
   process.env.SUPABASE_SERVICE_ROLE_KEY ? "Loaded" : "Missing",
 );
 
-const sock = new zmq.Pull();
+const pullSock = new zmq.Pull();
+const pushSock = new zmq.Push();
 
 async function startWorker() {
-  await sock.connect("tcp://127.0.0.1:3001");
-  console.log("Worker connected to tcp://127.0.0.1:3001");
+  await pullSock.connect("tcp://127.0.0.1:3001");
+  await pushSock.connect("tcp://127.0.0.1:3002");
+  console.log("Worker connected to tcp://127.0.0.1:3001 and reply 3002");
 
   while (true) {
-    const [msg] = await sock.receive();
+    const [msg] = await pullSock.receive();
     const data = JSON.parse(msg.toString());
 
     console.log("Worker received:", data);
 
-    await handleMessage(data);
+    const result = await handleMessage(data);
+
+    if (data._id) {
+      await pushSock.send(JSON.stringify({ id: data._id, ...result }));
+    }
   }
 }
 
@@ -30,13 +36,15 @@ async function handleMessage(data) {
 
   if (!handler) {
     console.error("No handler found for appId:", data.appId);
-    return;
+    return { ok: false, error: "no handler" };
   }
 
   try {
     await handler(data);
+    return { ok: true };
   } catch (err) {
     console.error("Error in handler:", err);
+    return { ok: false, error: err.message };
   }
 }
 
