@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Add-Data-Service Testbed</title>
+  </head>
+  <body>
+    <h1>Add-Data-Service Testbed</h1>
+
+    <form id="test-form">
+      <p><label>appId <input name="appId" value="app-C" /></label></p>
+      <p><label>resourceType <input name="resourceType" value="location" /></label></p>
+      <fieldset>
+        <legend>data</legend>
+        <p><label>name <input name="name" value="OSU Campus" /></label></p>
+        <p><label>street_address <input name="street_address" value="1500 SW Jefferson Way" /></label></p>
+        <p><label>city <input name="city" value="Corvallis" /></label></p>
+        <p><label>state <input name="state" value="OR" /></label></p>
+        <p><label>zip <input name="zip" value="97331" /></label></p>
+        <p><label>phone <input name="phone" value="555-123-4567" /></label></p>
+        <p><label>email <input name="email" value="info@osu.edu" /></label></p>
+      </fieldset>
+      <button type="submit">TEST</button>
+    </form>
+
+    <script>
+      document.getElementById("test-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const f = new FormData(e.target);
+        const payload = {
+          appId: f.get("appId"),
+          resourceType: f.get("resourceType"),
+          data: {
+            name: f.get("name"),
+            street_address: f.get("street_address"),
+            city: f.get("city"),
+            state: f.get("state"),
+            zip: f.get("zip"),
+            phone: f.get("phone"),
+            email: f.get("email"),
+          },
+        };
+        const res = await fetch("http://localhost:3000/add", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": "TEST-KEY-ABC123",
+          },
+          body: JSON.stringify(payload),
+        });
+        alert(res.ok ? "insert successful" : "insert failed");
+      });
+    </script>
+  </body>
+</html>
