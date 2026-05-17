@@ -7,6 +7,7 @@ const app = express();
 const port = 3000;
 
 app.use(express.json());
+app.use(express.static("test"));
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
@@ -18,7 +19,7 @@ app.post("/add", async (req, res) => {
     return res.sendStatus(400);
   }
 
-  await publishMessage(req.body);
+  const result = await publishMessage(req.body);
 
-  return res.sendStatus(200);
+  return res.sendStatus(result.ok ? 200 : 500);
 });
