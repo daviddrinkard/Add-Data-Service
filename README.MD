@@ -97,3 +97,5 @@ curl -X POST http://localhost:3000/add \
 # UML Diagram
 
 See file 'Add Data UML.png' in the code base.
+[UML Diagram](Add Data UML.png)
+[Simplified UML](Add Data UML - BASIC.png)
