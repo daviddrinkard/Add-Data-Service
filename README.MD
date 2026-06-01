@@ -19,7 +19,7 @@ Requesting:
 
 To request an insert, simply complete a POST to the specified address. Using the format:
 
-'''
+```
 curl -X POST http://localhost:3000/add \
  -H "Content-Type: application/json" \
  -H "x-api-key: TEST-KEY-ABC123" \
@@ -30,7 +30,7 @@ curl -X POST http://localhost:3000/add \
 formated object containing the data to insert
 }
 }'
-'''
+```
 
 appId - this is the ID of your application, it's configured for the microservice
 resourceType - this is the type of resource you want to insert, you can configure as many as you like
@@ -49,6 +49,7 @@ that there was a successful insertion operation.
 
 Here is an example POST request to add a new location to Application C
 
+```
 curl -X POST http://localhost:3000/add \
  -H "Content-Type: application/json" \
  -H "x-api-key: TEST-KEY-ABC123" \
@@ -65,7 +66,7 @@ curl -X POST http://localhost:3000/add \
 "email": "info@osu.edu"
 }
 }'
-
+```
 # UML Diagram
 
 See file 'Add Data UML.png' in the code base.
