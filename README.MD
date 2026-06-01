@@ -12,6 +12,30 @@ to integrate workflow for message queueing.
 
 # How to install & run Add-Data
 
+This application has 2 separate executables, one for the server and the other for the worker. The 'worker' is an instance of ZeroMQ
+that listens to messages and then does something with them, in this cases uses a message queue to send requests to an outside
+server. You will need to run them independently.
+
+Installing the application:
+
+```
+npm install
+```
+
+Running the server:
+
+```
+npm run dev
+```
+
+Running the worker:
+
+```
+npm run worker
+```
+
+The server binds to port 3000, and uses port 3001 to send messages and 3002 to receive. The worker listens for messages on 3001 and 3002.
+
 # How to REQUEST & RECEIVE data from Add Data
 
 The request made to Add Data will trigger an insert operation in the requested database, and the returned
